@@ -1,19 +1,20 @@
 <template>
 	<div class="corpo-painel">
 		<div>
-			<img src="https://static-images.ifood.com.br/image/upload/t_low/discoveries/19C1-brasileira-v2.jpg">
+			<img :src="loja.imagem">
 		</div>
 		<div class="info">
-			<h5>Don Corleone 24h - Florianópolis</h5>
+			<h5>{{loja.nome}}</h5>
 			<div class="info-secundaria">
 				<span class="star">&#9733;</span>
 				<p class="rating">4.5</p>
-				<p class="tipo"><span class="dot">&#10625; </span>Pizza<span class="dot"> &#10625; </span></p>
-				<p class="bairro">Trindade</p>
+				<p class="tipo"><span class="dot">&#10625; </span>{{loja.tipo}}<span class="dot"> &#10625; </span></p>
+				<p class="bairro">{{loja.bairro}}</p>
 			</div>
 			<div class="info-outras">
-				<p class="tempo">35-45 min<span class="dot"> &#10625; </span></p>
-				<p class="frete">Grátis</p>
+				<p class="tempo">{{loja.tempoEntrega}}<span class="dot"> &#10625; </span></p>
+				<p v-if="loja.frete" class="frete">R$ {{loja.frete.toFixed(2)}}</p>
+				<p v-else class="frete">Grátis</p>
 
 			</div>
 		</div>
@@ -23,6 +24,11 @@
 <script>
 export default {
 
+	props: {
+		loja: {
+			
+		},
+	},
 }
 </script>
 

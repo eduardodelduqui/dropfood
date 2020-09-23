@@ -3,9 +3,9 @@
 		<div class="box-lista">
 			<ul>
 				<li v-for="loja in lojas" class="loja">
-					<painel></painel>
-					<!-- {{loja.nome}}
-					{{loja.tipo}} -->
+					<painel :loja="loja">
+
+					</painel>
 				</li>
 			</ul>
 		
