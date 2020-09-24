@@ -17,10 +17,12 @@ export default {
 
 <style>
 body, html, #app{
+  position: absolute;
 	height: 100%;
+  width: 100%;
 	margin: 0;
 	padding: 0;
-	background-color: rgb(176, 58, 50);
+	background-color: white;
 }
 
 #app {

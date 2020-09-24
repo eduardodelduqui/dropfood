@@ -4,17 +4,19 @@
 			<img :src="loja.imagem">
 		</div>
 		<div class="info">
-			<h5>{{loja.nome}}</h5>
+			<router-link :to ="{name: 'loja', params: {nome: loja.nome}}"><h5>{{loja.nome}}</h5></router-link>
 			<div class="info-secundaria">
-				<span class="star">&#9733;</span>
+				<span class="rating">&#9733;</span>
 				<p class="rating">4.5</p>
-				<p class="tipo"><span class="dot">&#10625; </span>{{loja.tipo}}<span class="dot"> &#10625; </span></p>
+				<p class="tipo"> • {{loja.tipo}} • </p>
 				<p class="bairro">{{loja.bairro}}</p>
 			</div>
 			<div class="info-outras">
-				<p class="tempo">{{loja.tempoEntrega}}<span class="dot"> &#10625; </span></p>
-				<p v-if="loja.frete" class="frete">R$ {{loja.frete.toFixed(2)}}</p>
+				<p>30-45 min • </p>
+				<p v-if="loja.frete">R$ {{loja.frete.toFixed(2)}}</p>
 				<p v-else class="frete">Grátis</p>
+				
+				
 
 			</div>
 		</div>
@@ -39,8 +41,8 @@ export default {
 	display: flex;
 	padding: 20px 0px 20px 0px;
 	margin: 0px;
-	border-bottom: 1px solid rgba(173, 173, 173, 0.25);
-	border-top: 1px solid rgb(173, 173, 173, 0.25);
+	border-bottom: 1px solid rgb(176, 58, 50, 0.25);
+	border-top: 1px solid rgb(176, 58, 50, 0.25);
 }
 
 img
@@ -63,6 +65,12 @@ h5
 	font-size: 1em;
 	font-weight: bold;
 	margin: 0px;
+	color: rgb(176, 58, 50)
+}
+
+a{
+	text-decoration: none;
+	color: black;
 }
 
 .info-secundaria, .info-outras
@@ -71,7 +79,7 @@ h5
 }
 
 
-.star, .info-secundaria p, .info-outras p
+.rating, .info-secundaria p, .info-outras p
 {
 	font-size: 15px;
 	margin: 0px 5px 0px 0px;
@@ -83,12 +91,12 @@ h5
 	bottom: 0%;
 }
 
-.star
+.rating
 {
 	color: darkgoldenrod;
 }
 
-.tempo
+.info-outras
 {
 	color: rgb(61, 61, 61)
 }

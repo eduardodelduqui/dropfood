@@ -1,5 +1,11 @@
 <template>
 	<div class="corpo-home">
+		<!-- Image and text -->
+		<nav class="navbar fixed-top navbar-dark bg-cor">
+			<a class="navbar-brand" href="#">
+				Logo
+			</a>
+		</nav>
 		<div class="box-lista">
 			<ul>
 				<li v-for="loja in lojas" class="loja">
@@ -48,29 +54,31 @@ export default {
 
 <style scoped>
 
+
+
 .corpo-home
 {
 	height: 100vh;
 }
 
-.box-lista{
-	position: absolute;
-	background-color: white;
-	width: 90%;
-	height: 90%;
-	transform: translate(-50%, -50%);
-	top: 50%;
-	left: 50%;
-	margin: 15px 0 0 0px;
-	padding: 0px;
-	border-radius: 20px;
-	padding: 30px;
-	overflow-y: scroll;
+.bg-cor{
+	background-color: #b03a32;
 }
 
-.box-lista::-webkit-scrollbar{
-	display: none;
+.box-lista{
+	background-color: white;
+	width: 90%;
+	height: 100%;
+	margin: 15px auto 0 auto;
+	padding: 0px;
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	padding: 30px;
 }
+
+/* .box-lista::-webkit-scrollbar{
+	display: none;
+} */
 
 ul{
 	list-style: none;
