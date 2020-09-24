@@ -45,7 +45,6 @@
 					autocomplete="false"
 				></b-form-input>
 				</b-form-group>
-				</b-form-group>
 				<b-form-group
 					id="input-group-4"
 					label="Bairro:"
