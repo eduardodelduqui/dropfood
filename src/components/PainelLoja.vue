@@ -62,6 +62,7 @@ img
 
 h5
 {
+	display: inline-block;
 	font-size: 1em;
 	font-weight: bold;
 	margin: 0px;
@@ -109,6 +110,12 @@ a{
 .dot
 {
 	font-size: 14px;
+}
+
+@media (max-width: 430px){
+	img{
+		width: 70px;
+	}
 }
 
 

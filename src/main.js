@@ -7,6 +7,7 @@ import {routes} from './routes'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 
+
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -14,6 +15,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+
 
 const router = new VueRouter({
   routes: routes,

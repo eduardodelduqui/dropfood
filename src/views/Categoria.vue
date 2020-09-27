@@ -1,5 +1,6 @@
 <template>
 	<div class="corpo-home">
+		<!-- Image and text -->
 		<filtro class="filtro-tipo"></filtro>
 		<div class="box-lista">
 			<ul>
@@ -29,20 +30,48 @@ export default {
 
 	data() {
 		return {
+            tipo: this.$route.params.tipo,
 			lojas: [],
 
 
 			
 		}
-	},
+    },
+
+    beforeRouteUpdate(to, from, next) {
+        this.tipo = to.params.tipo
+        this.buscaPorTipo(this.tipo)
+        next()
+    },
+
+
+    methods: {
+        buscaPorTipo(tipo) {
+            let promise = this.$http.get(`http://localhost:3030/lojas/tipo/${tipo}`)
+            promise.then((res) => res.json())
+                .then((lojas) => {
+                this.lojas = lojas
+            });
+            
+        }
+    },
+    
+
+
+
+
+	
 
 	created(){
-			let promise = this.$http.get('http://localhost:3030/lojas')
-			promise.then((res) => res.json())
-				.then((lojas) => {
-				this.lojas = lojas
-			});
+        let tipo = this.tipo
+
+        let promise = this.$http.get(`http://localhost:3030/lojas/tipo/${tipo}`)
+        promise.then((res) => res.json())
+            .then((lojas) => {
+            this.lojas = lojas
+        });
 	},
+
 }
 </script>
 
@@ -50,7 +79,9 @@ export default {
 
 
 
-
+nav{
+	margin-bottom: 30px;
+}
 
 .corpo-home
 {
@@ -58,6 +89,11 @@ export default {
 	min-height: 100%;
 	margin: 0;
 }
+
+.bg-cor{
+	background-color: #b03a32;
+}
+
 
 .box-lista{
 	display: block;
@@ -72,16 +108,11 @@ export default {
 	min-height: 100%;
 }
 
+
 ul{
 	list-style: none;
 	padding: 0 20px;
 }
 
-@media (max-width:750px){
-	.box-lista{
-		padding: 30px 0 30px 0;
-		margin: 0px;
-	}
-}
 
 </style>

@@ -1,15 +1,16 @@
 <template>
-	<div class="corpo-cadastro">
-		<div class="box-cadastro container">
+	<div class="corpo-editar">
+		<span class="mensagem" :class="{mensagemVisivel}">{{mensagemVisivel}}</span>
+		<div>
+			<SideBar/>
+		</div>
+		<div class="box-editar">
 			<div class="box-coluna-1-2">
-				<span class="titulo-pagina">Aqui você vende mais!</span>
-				<div>
-				</div>
+				<h2>{{loja.nome}}</h2>
 			</div>
 			<div class="box-coluna-3">
-				<form @submit.prevent="cadastraLoja()">
+				<form @submit.prevent="editaLoja()">
 					<div class="formulario-1" :style="form1Animacao">
-						<h2>Cadastre-se</h2>
 					<b-form-group
 						id="input-group-nome"
 						label="Nome:"
@@ -17,7 +18,7 @@
 					>
 					<b-form-input
 						id="input-nome"
-						v-model="form.nome"
+						v-model="loja.nome"
 						type="text"
 						required
 						placeholder="Insira o nome do restaurante"
@@ -30,7 +31,7 @@
 						label-for="input-cnpj"
 					><b-form-input
 						id="input-cnpj"
-						v-model.lazy="form.cnpj"
+						v-model.lazy="loja.cnpj"
 						type="text"
 						required
 						placeholder="CNPJ"
@@ -44,7 +45,7 @@
 					>
 					<b-form-input
 						id="input-cep"
-						v-model.lazy="form.cep"
+						v-model.lazy="loja.cep"
 						type="text"
 						required
 						placeholder="Insira o CEP do restaurante"
@@ -59,7 +60,7 @@
 					>
 					<b-form-input
 						id="input-estado"
-						v-model="form.estado"
+						v-model="loja.estado"
 						type="text"
 						required
 						autocomplete="false"
@@ -72,7 +73,7 @@
 					>
 					<b-form-input
 						id="input-cidade"
-						v-model="form.cidade"
+						v-model="loja.cidade"
 						type="text"
 						required
 						autocomplete="false"
@@ -85,7 +86,7 @@
 					>
 					<b-form-input
 						id="input-bairro"
-						v-model="form.bairro"
+						v-model="loja.bairro"
 						type="text"
 						required
 						autocomplete="false"
@@ -99,12 +100,14 @@
 						label="Tipo:"
 						label-for="input-tipo"
 					>
-					<b-form-select
+					<b-form-input
 						id="input-tipo"
-						v-model="form.tipo"
-						:options="tipos"
+						v-model="loja.tipo"
+						type="text"
 						required
-					></b-form-select>
+						placeholder="Insira o tipo de comida"
+						autocomplete="false"
+					></b-form-input>
 					</b-form-group>
 					<b-form-group
 						id="input-group-imagem"
@@ -113,116 +116,105 @@
 					>
 					<b-form-input
 						id="input-imagem"
-						v-model.lazy="form.imagem"
+						v-model.lazy="loja.imagem"
 						type="url"
 						required
 						placeholder="Insira o logo do restaurante"
 						autocomplete="false"
 					></b-form-input>
-					<img :src="form.imagem">
+					<img :src="loja.imagem">
 					</b-form-group>
 					<b-form-group
 						id="input-group-frete"
-						label="Taxa de entrega:"
+						label="Frete:"
 						label-for="input-frete"
 					>
 					<b-form-input
 						id="input-frete"
-						v-model="form.frete"
+						v-model="loja.frete"
 						type="number"
 						required
 						step="0.01"
-						placeholder="Insira a taxa de entrega do restaurante"
+						placeholder="Insira o frete do restaurante"
 						autocomplete="false"
 					></b-form-input>
 					</b-form-group>
 					<label for="input-abertura">Horário de abertura</label>
-					<b-form-timepicker id="input-abertura" v-model="form.horarioAbre" minutes-step="15" locale="pt-br" placeholder="O restaurante abre às 08:00"></b-form-timepicker>
+					<b-form-timepicker id="input-abertura" v-model="loja.horarioAbre" minutes-step="15" locale="pt-br" placeholder="O restaurante abre às 08:00"></b-form-timepicker>
 					<label for="input-fechamento">Horário de fechamento</label>
-					<b-form-timepicker id="input-fechamento" v-model="form.horarioFecha" minutes-step="15" locale="pt-br" placeholder="O restaurante abre às 18:00"></b-form-timepicker>
+					<b-form-timepicker id="input-fechamento" v-model="loja.horarioFecha" minutes-step="15" locale="pt-br" placeholder="O restaurante abre às 18:00"></b-form-timepicker>
 					<button @click="trocaPagina()" type="button" class="btn btn-danger">Voltar</button>
-					<button type="submit" class="btn btn-danger">Cadastrar</button>
-					</div>
-				</form>
+					<button @click="trocaPagina()" type="submit" class="btn btn-danger">Editar</button>
+				</div>
+			</form>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+
+
+import Cardapio from '../components/Cardapio.vue';
+import SideBar from '../components/SideBar.vue';
+
 export default {
+
+	components: {
+		Cardapio,
+		SideBar
+
+	},
 
 	data() {
 		return {
-			form:{
-				nome: '',
-				tipo: null,
-				imagem: '',
-				bairro: '',
-				frete: '',
-				horarioAbre: '',
-				horarioFecha: '',
-				cnpj: '',
-				cep: '',
-				logradouro: '',
-				cidade: '',
-				estado: ''
-			},
-			tipos:[
-				{text: 'Selecione o tipo de comida', value: null},
-				'Árabe',
-				'Bebidas',
-				'Brasileira',
-				'Chinesa',
-				'Doces & Bolos',
-				'Japonesa',
-				'Lanches',
-				'Pizza',
-				'Vegetariana',
-			],
-
+			loja: '',
+			nome: this.$route.params.nome,
+			sidebarActivated: false,
 			passo_1: true,
-			passo_2: false
+			passo_2: false,
+			mensagemVisivel: ''
 		}
 	},
 
+
+
+	created () {
+        if(this.nome){
+            let nome = this.nome
+            this.$http.get(`http://localhost:3030/lojas/nome/${nome}`)
+                .then((loja) => this.loja = loja.body, (erro) => this.erro = erro) 
+        };
+	},
+	
 	methods: {
-		cadastraLoja() {
-			console.log(this.form)
-			this.$http.post('http://localhost:3030/lojas', this.form)
-			.then(() => this.form = {
-				nome: '',
-				tipo: '',
-				imagem: '',
-				bairro: '',
-				frete: '',
-				horarioAbre: '',
-				horarioFecha: '',
-				cnpj: '',
-				cep: '',
-				logradouro: '',
-				cidade: '',
-				estado: ''
-			})
+		editaLoja(){
+			console.log(this.loja)
+			let id = this.loja.id
+			this.$http.patch(`http://localhost:3030/lojas/${id}`, this.loja)
+				.then(()=>{
+					this.mensagemVisivel = 'Loja editada com sucesso'
+				})
+			
 		},
 
 		buscaEndereco(){
-			if(this.form.cep){
-				let cep = this.form.cep
+			if(this.loja.cep){
+				let cep = this.loja.cep
 				this.$http.get(`https://viacep.com.br/ws/${cep}/json`)
 					.then((res) => res.json())
 					.then((endereco) => {
-						this.form.cep = endereco.cep,
-						this.form.logradouro = endereco.logradouro,
-						this.form.bairro = endereco.bairro,
-						this.form.cidade = endereco.localidade,
-						this.form.estado = endereco.uf
+						this.loja.cep = endereco.cep,
+						this.loja.logradouro = endereco.logradouro,
+						this.loja.bairro = endereco.bairro,
+						this.loja.cidade = endereco.localidade,
+						this.loja.estado = endereco.uf
 					})
 			}else{
-				this.form.logradouro = '',
-				this.form.bairro = '',
-				this.form.cidade = '',
-				this.form.estado = ''
+				this.loja.logradouro = '',
+				this.loja.bairro = '',
+				this.loja.cidade = '',
+				this.loja.estado = ''
 			}
 		},
 
@@ -246,76 +238,112 @@ export default {
 			}
 		}
 	},
-
-
+	
 
 }
 </script>
 
 <style scoped>
 
-.titulo-pagina
-{
-	display: block;
-	font-size: 60px;
-	width: 100%;
-	word-wrap: break-word;
-	margin: 30px auto 0 auto;
-	font-weight: 500;
-}
-
-.formulario-1, .formulario-2
+.sidebar
 {
 	position: absolute;
-	width: 550px;
-	transition: 0.8s;
-	opacity: 1;
-	transform: translateY(-50%);
-	top: 40%;
+	height: 100%;
+	width: 350px;
+	left: -350px;
+	background-color: #111;
+	color: white;
+	z-index: 1;
+	transition: 0.5s;
 }
 
-#input-abertura, #input-fechamento
+.sidebarActivated{
+	left: 0px;
+}
+
+.sidebar-button{
+	position: absolute;
+	right: -42px;
+	width: 42px;
+	height: 45px;
+	margin: 0px;
+	background-color: #111;
+	padding: 0px;
+	border: none;
+	border-bottom-right-radius: 10px;
+	border-top-right-radius: 10px;
+	color: white;
+}
+
+.sidebar-button:focus{
+	outline: none;
+	border: none;
+}
+
+.button-icon-left, .button-icon-right
 {
-	margin-bottom: 10px;
+	font-size: 22px;
+	font-weight: bold;
+	transition: 0.2s;
+	margin: 0 auto;
+	margin-top: 2px;
 }
 
-.corpo-cadastro
+.button-icon-left
+{
+	transform: rotate(-180deg);
+
+}
+
+.corpo-editar
 {
 	position: absolute;
 	width: 100%;
 	height: 100%;
 	background-color: white;
+	overflow: hidden;
 }
 
-.box-cadastro{
+.box-editar{
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	background-color: white;
 	margin: 0 auto;
-	padding: 50px 0;
+	padding: 0px;
 	height: 100%;
-}
-
-.box-coluna-1-2
-{
-	grid-column: 1 / 3
-}
-
-.box-coluna-3
-{
-	grid-column: 3
 }
 
 h2
 {
-	text-align: center;
-	margin: 20px 0px 30px;
+	margin-left: 20px;
+	margin-top: 10px;
+}
+
+.box-coluna-1-2
+{
+	grid-column: 1 / 3;
+}
+
+.box-coluna-3
+{
+	grid-column: 3;
 }
 
 form
 {
+	/* animation: slide-left 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000) both; */
+}
+
+.formulario-1, .formulario-2
+{
+	display: inline-block;
+	margin: 20px;
+	position: absolute;
 	width: 550px;
-	margin: 0 auto;
+	transition: 0.8s;
+	opacity: 1;
+	transform: translatey(-50%);
+	top:40%;
 }
 
 button
@@ -324,19 +352,53 @@ button
 	width: 100px;
 }
 
-.box-coluna-1-2 div
-{
-	background-image: url('https://i.ibb.co/w6TRMMk/Pngtree-delivery-worker-push-trolley-in-5367925.png');
-	background-repeat: no-repeat;
-	height: 100%;
+img{
+	display: block;
+	margin: 0 auto;
 }
 
-img
-{
+.mensagem{
 	position: absolute;
-	top: 20%;
-	left: 1%
-
+	background-color: #B03A32;
+	padding: 10px;
+	width: 250px;
+	text-align: center;
+	color: white;
+	font-weight: 500;
+	transform: translateX(-50%);
+	left: 50%;
+	visibility: hidden;
 }
+
+.mensagemVisivel{
+	visibility: visible;
+	animation: fade-out;
+	animation-duration: 1s;
+	animation-delay: 2s;
+	animation-fill-mode: forwards;
+}
+
+@keyframes slide-left{
+	0% {
+		right: -100%;
+	}
+	100%{
+		right: 0%;
+	}
+}
+
+
+
+@keyframes fade-out{
+	0%{
+		opacity: 100%
+	}100%{
+		opacity: 0%
+	}
+}
+
+
+
+
 
 </style>
