@@ -2,13 +2,15 @@
         <div class="corpo-loja">
             <div class="info-loja">
                 <div class="info-loja-cabecalho">
-                    <img :src="loja.imagem">
+                    <div class="logo-loja">
+                        <img :src="loja.imagem">
+                    </div>
                     <div class="titulo-descricao">
-                        <h1>{{this.loja.nome}}</h1><router-link :to="{name: 'editar', params:{nome: this.loja.nome}}"><b-icon-pencil class="editar"></b-icon-pencil></router-link>
+                        <h1>{{this.loja.nome}}</h1><router-link :to="{name: 'menuprofile', params:{id: this.loja.id}}"><b-icon-pencil class="editar"></b-icon-pencil></router-link>
                         <p>Pratos Executivos, Refeição, Pizza, Pizza doce, Massas, Grelhados, Grelhados na Brasa, Filé, Filet, Mignon, Minhon, Entrecot, 
                             Entrecote, Salmão, Nhoque, Gnocchi, Frango, Estrogonofe, Strogonoff, Suco, Cerveja, Chopp, Vinho.</p>
-                        <p v-if="loja.frete"><span id="rating">&#9733; 4.5</span> •  {{loja.tipo}} •  30-45 min •  {{loja.bairro}} •  <span class="frete">Entrega R$ {{loja.frete.toFixed(2)}}</span></p>
-                        <p v-else><span id="rating">&#9733; 4.5</span> •  {{loja.tipo}} •  30-45 min •  {{loja.bairro}} •  <span class="frete">Entrega Grátis</span></p>
+                        <p v-if="loja.frete"><span id="rating">&#9733; 4.5</span> •  {{loja.tipo}} •  30-45 min •  {{distancia}} km •  <span class="frete">Entrega R$ {{loja.frete.toFixed(2)}}</span></p>
+                        <p v-else><span id="rating">&#9733; 4.5</span> •  {{loja.tipo}} •  30-45 min •  {{distancia}} km •  <span class="frete">Entrega Grátis</span></p>
                         <div class="info-loja-sobre">
                             <SobreLoja
                                 :logradouro="loja.logradouro"
@@ -20,19 +22,14 @@
                             ></SobreLoja>
                         </div>
                     </div>
-                </div>
-                
-            </div>
-            
-            <div class="box">
+                </div>    
+            </div> 
+            <section class="cardapio">
                 <div class="circle"></div>
-                <div class="box-itens">
-                    <cardapio></cardapio>
-
+                <div v-if="loaded" class="cardapio-itens">
+                    <Cardapio :id_loja="loja.id" filtroCategoria buscaCardapio></Cardapio>
                 </div>
-
-            </div>
-
+            </section>
         </div>
 </template>
 
@@ -40,32 +37,63 @@
 
 import Cardapio from '../components/Cardapio'
 import SobreLoja from '../components/SobreLoja'
+import PratoService from '../directives/domain/prato/PratoService'
+const geopoint = require('geopoint')
 
 export default {
 
     components: {
         Cardapio,
-        SobreLoja
+        SobreLoja,
     },
 
     data() {
         return {
             loja: '',
             nome: this.$route.params.nome,
+            user: {
+                lat: '',
+                lng: ''
+            },
+            distancia: '',
+            loaded: false
         }
     },
 
 
     created () {
+        this.pratoService = new PratoService(this.$resource)
         
         if(this.nome){
             let nome = this.nome
-            this.$http.get(`http://localhost:3030/lojas/nome/${nome}`)
-                .then((loja) => this.loja = loja.body, (erro) => this.erro = erro) 
+            this.$http.get(`lojas/nome/${nome}`)
+                .then(res => res.json())
+                .then((loja) => this.loja = loja, (erro) => this.erro = erro)
+                .finally(() => this.loaded = true)   
         };
+
+
+        this.$getLocation({})
+            .then(coordinates =>{ this.user = coordinates})
+
     },
 
+    watch: {
+		user(newValue, oldValue) {
+			this.distancia = this.calculaDistancia(newValue, this.loja)
+		}
+	},
 
+	methods: {
+		calculaDistancia(user, loja) {
+			let usuario = user;
+			let ponto1 = new geopoint(usuario.lat, usuario.lng)
+			let ponto2 = new geopoint(loja.latitude, loja.longitude)
+			let distancia = ponto1.distanceTo(ponto2)*1.609
+			
+			return distancia.toFixed(1)
+		}
+	},
 }
 </script>
 
@@ -95,14 +123,10 @@ h1
 }
 .info-loja-cabecalho
 {
-    display: flex;
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 20px;
     margin-top: 50px;
-    align-items: flex-start;
-}
-
-.titulo-descricao
-{
-    margin-left: 20px;
 }
 
 .titulo-descricao p{
@@ -123,20 +147,18 @@ h1
 {
     border: 1px solid #a7a6a6;
     padding: 3px;
+    white-space: nowrap;
 }
 
-
-
-
-.box{
+.cardapio{
 	background-color: #b03a32;
 	width: 100%;
 	height: 90%;
-	margin: 20px auto 0 auto;
-	padding: 0px;
+	margin: 20px auto 0px auto;
 	border-top-left-radius: 30px;
     border-top-right-radius: 30px;
-	padding-top: 50px;
+	padding: 50px 0px;
+
 }
 
 .circle{
@@ -149,7 +171,7 @@ h1
     border-radius: 30px;
 }
 
-.box-itens
+.cardapio-itens
 {
     background-color: white;
     height: 100%;
@@ -157,9 +179,35 @@ h1
     margin: 0 auto;
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
-    padding: 30px 50px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    padding: 25px 40px;
 }
 
 
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+@media (max-width: 580px){
+    .info-loja-cabecalho{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 420px){
+    .cardapio-itens
+    {
+        padding: 25px 5px;
+    }
+
+    h1
+    {
+        font-size: 24px;
+    }
+}
 
 </style>

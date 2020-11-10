@@ -5,6 +5,9 @@ import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 import {routes} from './routes'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import VueWindowSize from 'vue-window-size'
+import VueGeolocation from 'vue-browser-geolocation'
+import * as geolib from 'geolib'
 
 
 
@@ -13,8 +16,13 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
+Vue.use(VueWindowSize);
+Vue.use(geolib);
+Vue.use(VueGeolocation);
+
+Vue.http.options.root = 'http://localhost:3000'
 
 
 const router = new VueRouter({

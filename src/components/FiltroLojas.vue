@@ -13,7 +13,6 @@ export default {
         return {
             
             tipos:[
-
                 'Árabe',
 				'Bebidas',
 				'Brasileira',
@@ -37,7 +36,13 @@ export default {
 {
     display: block;
     height: 100%;
+    overflow: scroll;
 }
+
+.filtro::-webkit-scrollbar {
+  display: none;
+}
+
 
 ul
 {
@@ -48,8 +53,7 @@ ul
     height: 100%;
     text-align: center;
     padding: 10px 0;
-    z-index: 1;
-
+    min-width: 1000px;
 }
 
 
@@ -69,29 +73,6 @@ ul
     cursor: pointer;
     text-decoration: none
 }
-
-
-
-
-
-@media (max-width: 1100px)
-{
-    ul{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .lista-item{
-        margin: 1px;
-        border: 1px solid rgba(139, 139, 139, 0.63);
-        width: 90%;
-        text-align: center;
-        background-color: rgba(219, 219, 219, .8)
-    }
-}
-
-
 
 
 

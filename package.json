@@ -13,10 +13,14 @@
     "@kugatsu/vuenotification": "^1.1.4",
     "bootstrap": "^4.5.2",
     "bootstrap-vue": "^2.17.3",
+    "geolib": "^3.3.1",
+    "geopoint": "^1.0.1",
     "jquery": "^3.5.1",
     "vue": "^2.6.12",
     "vue-resource": "^1.5.1",
-    "vue-router": "^3.4.3"
+    "vue-router": "^3.4.3",
+    "vue-window-size": "^0.6.2",
+    "vue2-browser-location-distance": "^1.0.0"
   },
   "browserslist": [
     "> 1%",
@@ -31,6 +35,7 @@
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
+    "vue-browser-geolocation": "^1.8.0",
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
     "webpack": "^3.6.0",

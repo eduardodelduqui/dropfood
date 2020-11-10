@@ -1,16 +1,14 @@
 <template>
 	<div class="corpo-home">
-		<filtro class="filtro-tipo"></filtro>
+		<FiltroLojas class="filtro-tipo" />
 		<div class="box-lista">
 			<ul>
 				<li v-for="loja in lojas" class="loja" >
-					<painel :loja="loja">
+					<PainelLoja :loja="loja">
 
-					</painel>
+					</PainelLoja>
 				</li>
 			</ul>
-		
-
 		</div>
 	</div>
 </template>
@@ -18,39 +16,36 @@
 <script>
 
 import PainelLoja from '../components/PainelLoja'
-import Filtro from '../components/Filtro'
+import FiltroLojas from '../components/FiltroLojas'
+import LojaService from '../directives/domain/loja/LojaService'
+
 
 export default {
 
 	components: {
-		'painel': PainelLoja,
-		Filtro
+		PainelLoja,
+		FiltroLojas,
 	},
 
 	data() {
 		return {
 			lojas: [],
-
-
-			
+			distancia: ''
 		}
 	},
 
 	created(){
-			let promise = this.$http.get('http://localhost:3030/lojas')
-			promise.then((res) => res.json())
-				.then((lojas) => {
-				this.lojas = lojas
-			});
+		this.service = new LojaService(this.$resource);
+		this.service.lista()
+					.then((lojas) => {
+						this.lojas = lojas
+					});	
 	},
+
 }
 </script>
 
 <style scoped>
-
-
-
-
 
 .corpo-home
 {
@@ -59,7 +54,8 @@ export default {
 	margin: 0;
 }
 
-.box-lista{
+.box-lista
+{
 	display: block;
 	background-color: white;
 	width: 90%;
@@ -72,7 +68,8 @@ export default {
 	min-height: 100%;
 }
 
-ul{
+ul
+{
 	list-style: none;
 	padding: 0 20px;
 }
@@ -81,6 +78,7 @@ ul{
 	.box-lista{
 		padding: 30px 0 30px 0;
 		margin: 0px;
+		width: 100%;
 	}
 }
 

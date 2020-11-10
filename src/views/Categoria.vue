@@ -1,17 +1,15 @@
 <template>
 	<div class="corpo-home">
 		<!-- Image and text -->
-		<filtro class="filtro-tipo"></filtro>
+		<FiltroLojas class="filtro-tipo"></FiltroLojas>
 		<div class="box-lista">
 			<ul>
 				<li v-for="loja in lojas" class="loja" >
-					<painel :loja="loja">
+					<PainelLoja :loja="loja">
 
-					</painel>
+					</PainelLoja>
 				</li>
 			</ul>
-		
-
 		</div>
 	</div>
 </template>
@@ -19,13 +17,13 @@
 <script>
 
 import PainelLoja from '../components/PainelLoja'
-import Filtro from '../components/Filtro'
+import FiltroLojas from '../components/FiltroLojas'
 
 export default {
 
 	components: {
-		'painel': PainelLoja,
-		Filtro
+		PainelLoja,
+		FiltroLojas
 	},
 
 	data() {
@@ -47,7 +45,7 @@ export default {
 
     methods: {
         buscaPorTipo(tipo) {
-            let promise = this.$http.get(`http://localhost:3030/lojas/tipo/${tipo}`)
+            let promise = this.$http.get(`lojas/tipo/${tipo}`)
             promise.then((res) => res.json())
                 .then((lojas) => {
                 this.lojas = lojas
@@ -65,7 +63,7 @@ export default {
 	created(){
         let tipo = this.tipo
 
-        let promise = this.$http.get(`http://localhost:3030/lojas/tipo/${tipo}`)
+        let promise = this.$http.get(`lojas/tipo/${tipo}`)
         promise.then((res) => res.json())
             .then((lojas) => {
             this.lojas = lojas
@@ -79,21 +77,12 @@ export default {
 
 
 
-nav{
-	margin-bottom: 30px;
-}
-
 .corpo-home
 {
 	height: 100%;
 	min-height: 100%;
 	margin: 0;
 }
-
-.bg-cor{
-	background-color: #b03a32;
-}
-
 
 .box-lista{
 	display: block;
@@ -108,11 +97,17 @@ nav{
 	min-height: 100%;
 }
 
-
 ul{
 	list-style: none;
 	padding: 0 20px;
 }
 
+@media (max-width:750px){
+	.box-lista{
+		padding: 30px 0 30px 0;
+		margin: 0px;
+		width: 100%;
+	}
+}
 
 </style>

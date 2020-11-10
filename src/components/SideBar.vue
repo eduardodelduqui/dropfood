@@ -11,7 +11,10 @@
                         <router-link :to="{name: 'editar'}">Loja</router-link>
                     </li>
                     <li>
-                        <router-link :to="{path: '/cardapio'}">Cardápio</router-link>
+                        <router-link :to="{name: 'editarcardapio'}">Cardápio</router-link>
+                    </li>
+                    <li>
+                        <router-link :to="{name: 'itensadicionais', params: {id: this.id}}">Itens Adicionais</router-link>
                     </li>
                     <li>
                         <router-link :to="{path: '/historico'}">Histórico</router-link>

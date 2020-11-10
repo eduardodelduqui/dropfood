@@ -1,254 +1,252 @@
 <template>
 	<div class="corpo-cadastro">
 		<div class="box-cadastro container">
-			<div class="box-coluna-1-2">
-				<span class="titulo-pagina">Aqui você vende mais!</span>
-				<div>
+			<h2>Cadastre-se</h2>
+			<form @submit.prevent="cadastraLoja()">
+				<div class="formulario-cadastro" :style="form1Animacao">
+				<b-form-group
+					id="input-group-nome"
+					label="Nome:"
+					label-for="input-nome"
+				>
+				<b-form-input
+					id="input-nome"
+					v-model="loja.nome"
+					type="text"
+					required
+					placeholder="Insira o nome do restaurante"
+					autocomplete="false"
+				></b-form-input>
+				</b-form-group>
+				<b-form-group
+					id="input-group-cnpj"
+					label="CNPJ:"
+					label-for="input-cnpj"
+				><b-form-input
+					id="input-cnpj"
+					v-model.lazy="loja.cnpj"
+					type="text"
+					required
+					placeholder="CNPJ"
+					autocomplete="false"
+				></b-form-input>
+				</b-form-group>
+				<b-form-group
+					id="input-group-cep"
+					label="CEP:"
+					label-for="input-cep"
+				>
+				<b-form-input
+					id="input-cep"
+					v-model.lazy="loja.cep"
+					type="text"
+					required
+					placeholder="Insira o CEP do restaurante"
+					autocomplete="false"
+					@change="buscaEndereco()"
+				></b-form-input>
+				</b-form-group>
+				<b-form-group
+					id="input-group-estado"
+					label="UF:"
+					label-for="input-estado"
+				>
+				<b-form-input
+					id="input-estado"
+					v-model="loja.estado"
+					type="text"
+					required
+					autocomplete="false"
+				></b-form-input>
+				</b-form-group>
+				<b-form-group
+					id="input-group-cidade"
+					label="Município:"
+					label-for="input-cidade"
+				>
+				<b-form-input
+					id="input-cidade"
+					v-model="loja.cidade"
+					type="text"
+					required
+					autocomplete="false"
+				></b-form-input>
+				</b-form-group>
+				<b-form-group
+					id="input-group-bairro"
+					label="Bairro:"
+					label-for="input-bairro"
+				>
+				<b-form-input
+					id="input-bairro"
+					v-model="loja.bairro"
+					type="text"
+					required
+					autocomplete="false"
+					@change="buscaCoordenada()"
+				></b-form-input>
+				</b-form-group>
+				<button @click="trocaPagina()" type="button" class="btn btn-danger">Próximo</button>
 				</div>
-			</div>
-			<div class="box-coluna-3">
-				<form @submit.prevent="cadastraLoja()">
-					<div class="formulario-1" :style="form1Animacao">
-						<h2>Cadastre-se</h2>
-					<b-form-group
-						id="input-group-nome"
-						label="Nome:"
-						label-for="input-nome"
+				<div class="formulario-cadastro" :style="form2Animacao">
+				<b-form-group
+					id="input-group-tipo"
+					label="Tipo:"
+					label-for="input-tipo"
+				>
+				<b-form-select
+					id="input-tipo"
+					v-model="loja.tipo"
+					:options="tipos"
+					required
+				></b-form-select>
+				</b-form-group>
+				<b-form-group label="Descrição: ">
+					<b-form-textarea
+						v-model="loja.descricao"
+						placeholder="Insira uma descrição"
 					>
-					<b-form-input
-						id="input-nome"
-						v-model="form.nome"
-						type="text"
-						required
-						placeholder="Insira o nome do restaurante"
-						autocomplete="false"
-					></b-form-input>
-					</b-form-group>
-					<b-form-group
-						id="input-group-cnpj"
-						label="CNPJ:"
-						label-for="input-cnpj"
-					><b-form-input
-						id="input-cnpj"
-						v-model.lazy="form.cnpj"
-						type="text"
-						required
-						placeholder="CNPJ"
-						autocomplete="false"
-					></b-form-input>
-					</b-form-group>
-					<b-form-group
-						id="input-group-cep"
-						label="CEP:"
-						label-for="input-cep"
-					>
-					<b-form-input
-						id="input-cep"
-						v-model.lazy="form.cep"
-						type="text"
-						required
-						placeholder="Insira o CEP do restaurante"
-						autocomplete="false"
-						@change="buscaEndereco()"
-					></b-form-input>
-					</b-form-group>
-					<b-form-group
-						id="input-group-estado"
-						label="UF:"
-						label-for="input-estado"
-					>
-					<b-form-input
-						id="input-estado"
-						v-model="form.estado"
-						type="text"
-						required
-						autocomplete="false"
-					></b-form-input>
-					</b-form-group>
-					<b-form-group
-						id="input-group-cidade"
-						label="Município:"
-						label-for="input-cidade"
-					>
-					<b-form-input
-						id="input-cidade"
-						v-model="form.cidade"
-						type="text"
-						required
-						autocomplete="false"
-					></b-form-input>
-					</b-form-group>
-					<b-form-group
-						id="input-group-bairro"
-						label="Bairro:"
-						label-for="input-bairro"
-					>
-					<b-form-input
-						id="input-bairro"
-						v-model="form.bairro"
-						type="text"
-						required
-						autocomplete="false"
-					></b-form-input>
-					</b-form-group>
-					<button @click="trocaPagina()" type="button" class="btn btn-danger">Próximo</button>
-					</div>
-					<div class="formulario-2" :style="form2Animacao">
-					<b-form-group
-						id="input-group-tipo"
-						label="Tipo:"
-						label-for="input-tipo"
-					>
-					<b-form-select
-						id="input-tipo"
-						v-model="form.tipo"
-						:options="tipos"
-						required
-					></b-form-select>
-					</b-form-group>
-					<b-form-group
-						id="input-group-imagem"
-						label="Logo:"
-						label-for="input-imagem"
-					>
-					<b-form-input
-						id="input-imagem"
-						v-model.lazy="form.imagem"
-						type="url"
-						required
-						placeholder="Insira o logo do restaurante"
-						autocomplete="false"
-					></b-form-input>
-					<img :src="form.imagem">
-					</b-form-group>
-					<b-form-group
-						id="input-group-frete"
-						label="Taxa de entrega:"
-						label-for="input-frete"
-					>
-					<b-form-input
-						id="input-frete"
-						v-model="form.frete"
-						type="number"
-						required
-						step="0.01"
-						placeholder="Insira a taxa de entrega do restaurante"
-						autocomplete="false"
-					></b-form-input>
-					</b-form-group>
-					<label for="input-abertura">Horário de abertura</label>
-					<b-form-timepicker id="input-abertura" v-model="form.horarioAbre" minutes-step="15" locale="pt-br" placeholder="O restaurante abre às 08:00"></b-form-timepicker>
-					<label for="input-fechamento">Horário de fechamento</label>
-					<b-form-timepicker id="input-fechamento" v-model="form.horarioFecha" minutes-step="15" locale="pt-br" placeholder="O restaurante abre às 18:00"></b-form-timepicker>
-					<button @click="trocaPagina()" type="button" class="btn btn-danger">Voltar</button>
-					<button type="submit" class="btn btn-danger">Cadastrar</button>
-					</div>
-				</form>
-			</div>
+					</b-form-textarea>
+				</b-form-group>
+				<b-form-group
+					id="input-group-imagem"
+					label="Logo:"
+					label-for="input-imagem"
+				>
+				<b-form-input
+					id="input-imagem"
+					v-model.lazy="loja.imagem"
+					type="url"
+					required
+					placeholder="Insira o logo do restaurante"
+					autocomplete="false"
+				></b-form-input>
+				<img :src="loja.imagem">
+				</b-form-group>
+				<b-form-group
+					id="input-group-frete"
+					label="Taxa de entrega:"
+					label-for="input-frete"
+				>
+				<b-form-input
+					id="input-frete"
+					v-model="loja.frete"
+					type="number"
+					required
+					step="0.01"
+					placeholder="Insira a taxa de entrega do restaurante"
+					autocomplete="false"
+				></b-form-input>
+				</b-form-group>
+				<label for="input-abertura">Horário de abertura</label>
+				<b-form-timepicker id="input-abertura" v-model="loja.horarioAbre" minutes-step="15" locale="pt-br" placeholder="O restaurante abre às 08:00"></b-form-timepicker>
+				<label for="input-fechamento">Horário de fechamento</label>
+				<b-form-timepicker id="input-fechamento" v-model="loja.horarioFecha" minutes-step="15" locale="pt-br" placeholder="O restaurante abre às 18:00"></b-form-timepicker>
+				<button @click="trocaPagina()" type="button" class="button-voltar btn btn-danger">Voltar</button>
+				<button type="submit" class="button-cadastrar btn btn-danger">Cadastrar</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </template>
 
 <script>
+
+import Loja from "../directives/domain/loja/Loja"
+
 export default {
 
 	data() {
 		return {
-			form:{
-				nome: '',
-				tipo: null,
-				imagem: '',
-				bairro: '',
-				frete: '',
-				horarioAbre: '',
-				horarioFecha: '',
-				cnpj: '',
-				cep: '',
-				logradouro: '',
-				cidade: '',
-				estado: ''
-			},
+			loja: new Loja(this.nomeDono, this.email),
 			tipos:[
 				{text: 'Selecione o tipo de comida', value: null},
 				'Árabe',
 				'Bebidas',
 				'Brasileira',
 				'Chinesa',
+				'Frutos do Mar',
 				'Doces & Bolos',
 				'Japonesa',
 				'Lanches',
 				'Pizza',
 				'Vegetariana',
 			],
-
 			passo_1: true,
-			passo_2: false
+			passo_2: false,
+			nomeDono: this.$route.params.nome,
+			email: this.$route.params.email
 		}
 	},
 
 	methods: {
 		cadastraLoja() {
-			console.log(this.form)
-			this.$http.post('http://localhost:3030/lojas', this.form)
-			.then(() => this.form = {
-				nome: '',
-				tipo: '',
-				imagem: '',
-				bairro: '',
-				frete: '',
-				horarioAbre: '',
-				horarioFecha: '',
-				cnpj: '',
-				cep: '',
-				logradouro: '',
-				cidade: '',
-				estado: ''
-			})
+			console.log(this.loja)
+			let endereco = [this.loja.logradouro, this.loja.bairro, this.loja.cidade].join(" ");
+			this.$http.get(`https://api.opencagedata.com/geocode/v1/json?q=${endereco}&key=77c77e3eb2574100a02476d764627ff6&language=pt&pretty=1`)
+				.then((res) => res.json())
+				.then((resultado) =>{
+					console.log(resultado.results[0].geometry)
+					this.loja.longitude = resultado.results[0].geometry.lng
+					this.loja.latitude = resultado.results[0].geometry.lat
+
+				}).then(() => {
+					this.$http.post('lojas', this.loja)
+					.then(() => this.loja = new Loja(this.nomeDono, this.email))
+				});
 		},
 
+
 		buscaEndereco(){
-			if(this.form.cep){
-				let cep = this.form.cep
+			if(this.loja.cep){
+				let cep = this.loja.cep
 				this.$http.get(`https://viacep.com.br/ws/${cep}/json`)
 					.then((res) => res.json())
 					.then((endereco) => {
-						this.form.cep = endereco.cep,
-						this.form.logradouro = endereco.logradouro,
-						this.form.bairro = endereco.bairro,
-						this.form.cidade = endereco.localidade,
-						this.form.estado = endereco.uf
+						this.loja.cep = endereco.cep,
+						this.loja.logradouro = endereco.logradouro,
+						this.loja.bairro = endereco.bairro,
+						this.loja.cidade = endereco.localidade,
+						this.loja.estado = endereco.uf
 					})
 			}else{
-				this.form.logradouro = '',
-				this.form.bairro = '',
-				this.form.cidade = '',
-				this.form.estado = ''
+				this.loja.logradouro = '',
+				this.loja.bairro = '',
+				this.loja.cidade = '',
+				this.loja.estado = ''
 			}
+		},
+
+		buscaCoordenada(){
+			let endereco = [this.loja.logradouro, this.loja.bairro, this.loja.cidade].join(" ");
+			this.$http.get(`https://api.opencagedata.com/geocode/v1/json?q=${endereco}&key=77c77e3eb2574100a02476d764627ff6&language=pt&pretty=1`)
+				.then((res) => res.json())
+				.then((resultado) =>{
+					console.log(resultado.results[0].geometry)
+					this.loja.longitude = resultado.results[0].geometry.lng
+					this.loja.latitude = resultado.results[0].geometry.lat
+
+				});
 		},
 
 		trocaPagina(){
 			this.passo_1 = !this.passo_1
 			this.passo_2 = !this.passo_2
-
 		}
 	},
 
 	computed: {
 		form1Animacao() {
 			if(!this.passo_1)
-				return "top: -50%; opacity: 0%; transition: 0.8s"
-
+				return "display:none; opacity: 0%; transition: 0.8s"
 		},
 
 		form2Animacao(){
 			if(!this.passo_2){
-				return "top: -50%; opacity: 0%; transition: 0.8s"
+				return "display: none; opacity: 0%; transition: 0.8s"
 			}
 		}
 	},
-
-
-
 }
 </script>
 
@@ -264,19 +262,8 @@ export default {
 	font-weight: 500;
 }
 
-.formulario-1, .formulario-2
-{
+.formulario{
 	position: absolute;
-	width: 550px;
-	transition: 0.8s;
-	opacity: 1;
-	transform: translateY(-50%);
-	top: 40%;
-}
-
-#input-abertura, #input-fechamento
-{
-	margin-bottom: 10px;
 }
 
 .corpo-cadastro
@@ -287,56 +274,33 @@ export default {
 	background-color: white;
 }
 
-.box-cadastro{
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	background-color: white;
-	margin: 0 auto;
-	padding: 50px 0;
-	height: 100%;
-}
-
-.box-coluna-1-2
-{
-	grid-column: 1 / 3
-}
-
-.box-coluna-3
-{
-	grid-column: 3
-}
-
 h2
 {
 	text-align: center;
 	margin: 20px 0px 30px;
 }
 
-form
-{
-	width: 550px;
-	margin: 0 auto;
-}
-
 button
 {
 	display: inline-block;
 	width: 100px;
+	margin: 10px;
 }
 
-.box-coluna-1-2 div
-{
-	background-image: url('https://i.ibb.co/w6TRMMk/Pngtree-delivery-worker-push-trolley-in-5367925.png');
-	background-repeat: no-repeat;
-	height: 100%;
+.button-cadastrar{
+	float: right;
 }
 
 img
 {
-	position: absolute;
-	top: 20%;
-	left: 1%
+	display: block;
+	margin: 0 auto;
+}
 
+@media (max-width: 500px) {
+	form {
+		width: 100%;
+	}
 }
 
 </style>
