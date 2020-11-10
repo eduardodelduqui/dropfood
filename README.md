@@ -21,4 +21,4 @@ dropFood é uma aplicação fictícia aos moldes dos food delivery apps. Na apli
 
 A aplicação ainda está em desenvolvimento
 
-<img src="https://i.ibb.co/8swc8j2/dropfood.png" width="30%"></img><img src="https://i.ibb.co/G2V2BXK/dropfoodloja.png" width="30%"></img><img src="https://i.ibb.co/48wPQhf/dropfoodpedido.png" width="30%"></img>
+<img src="https://i.ibb.co/8swc8j2/dropfood.png" width="30%"></img><img src="https://i.ibb.co/G2V2BXK/dropfoodloja.png" width="30%"></img><img src="https://i.ibb.co/G32fJN6/dropfoodpedido.png" width="30%"></img>
